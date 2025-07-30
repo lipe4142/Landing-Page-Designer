@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Felipe Campos| Designer & Editor de Vídeo</title>
+    <title>JoãoFelipe Campos| Designer & Editor de Vídeo</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -94,6 +94,26 @@
             position: relative;
             z-index: 1;
         }
+
+           /* Estilo do Botão WhatsApp (NOVO) */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25D366; /* Cor oficial do WhatsApp */
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
     </style>
 </head>
 <!-- Classe do body alterada para o novo fundo (NOVO) -->
@@ -283,6 +303,16 @@
         <div id="modal-content" class="max-w-4xl max-h-full"></div>
         <button id="modal-close" class="absolute top-4 right-6 text-white text-4xl font-bold">&times;</button>
     </div>
+
+    <!-- Botão Flutuante do WhatsApp (NOVO) -->
+    <!-- Altere o número de telefone para o seu, incluindo o código do país (55 para o Brasil) -->
+    <a href="https://wa.me/5598999999999?text=Olá!%20Vi%20seu%20portfólio%20e%20gostaria%20de%20saber%20mais." 
+       target="_blank" 
+       class="whatsapp-button"
+       aria-label="Fale comigo no WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
