@@ -16,7 +16,7 @@
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- tsParticles para partículas animadas (NOVO) -->
+    <!-- tsParticles para partículas animadas -->
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
 
     <style>
@@ -65,7 +65,7 @@
             box-shadow: 0 10px 20px rgba(249, 115, 22, 0.2);
         }
 
-        /* Fundo com gradiente animado (NOVO) */
+        /* Fundo com gradiente animado */
         .animated-gradient-bg {
             background: linear-gradient(-45deg, #111827, #1f2937, #4a1a05, #111827);
             background-size: 400% 400%;
@@ -78,7 +78,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Container das partículas (NOVO) */
+        /* Container das partículas */
         #tsparticles {
             position: fixed;
             top: 0;
@@ -95,7 +95,7 @@
             z-index: 1;
         }
 
-           /* Estilo do Botão WhatsApp (NOVO) */
+        /* Estilo do Botão WhatsApp */
         .whatsapp-button {
             position: fixed;
             bottom: 25px;
@@ -116,19 +116,17 @@
 
     </style>
 </head>
-<!-- Classe do body alterada para o novo fundo (NOVO) -->
 <body class="animated-gradient-bg">
 
-    <!-- Fundo com partículas (NOVO) -->
+    <!-- Fundo com partículas -->
     <div id="tsparticles"></div>
 
     <!-- Cabeçalho -->
     <header id="main-header" class="fixed w-full top-0 z-50 transition-all duration-300 bg-gray-900/80 backdrop-blur-sm">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#">
-                <img src="LOGO BRANCA.png" alt="Logo da minha marca" class="h-12"> <!-- Altura ajustada para um valor mais comum -->
+                <img src="LOGO BRANCA.png" alt="Logo da minha marca" class="h-12">
             </a>
-            <!-- Tag <nav> corrigida -->
             <nav class="hidden md:flex space-x-8">
                 <a href="#portfolio" class="text-gray-300 hover:text-orange-500 transition">Portfólio</a>
                 <a href="#testimonials" class="text-gray-300 hover:text-orange-500 transition">Depoimentos</a>
@@ -160,7 +158,8 @@
                 <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8">
                     Especialista em Design Gráfico e Edição de Vídeo, criando conteúdo que engaja, inspira e converte.
                 </p>
-                <a href="#portfolio" class="bg-highlight text-white font-bold py-3 px-8 rounded-lg text-lg bg-highlight-hover transition-transform transform hover:scale-105">
+                <!-- LINK ATUALIZADO AQUI -->
+                <a href="https://www.behance.net/joaocampos7" target="_blank" class="bg-highlight text-white font-bold py-3 px-8 rounded-lg text-lg bg-highlight-hover transition-transform transform hover:scale-105">
                     Veja meu trabalho
                 </a>
             </div>
@@ -182,12 +181,12 @@
 
                 <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     
-                    <!-- Item de Vídeo 1 (CORRIGIDO) -->
+                    <!-- Item de Vídeo 1 -->
                     <div class="portfolio-item-container reveal" data-category="video">
                         <div class="portfolio-item bg-gray-800 rounded-lg overflow-hidden cursor-pointer" 
                              data-type="video" 
-                             data-source="https://www.youtube.com/embed/ZlmADUZJGW8?si=BvdmdQyRkZpHp5Uq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>">
-                            <img src="https://i.ytimg.com/an_webp/ZlmADUZJGW8/mqdefault_6s.webp?du=3000&sqp=CIiYqsQG&rs=AOn4CLDpjZwLB_5tNULIfUoPLBDo2zit_g" alt="Thumbnail do Vídeo" class="w-full h-48 object-cover">
+                             data-source="https://www.youtube.com/embed/ZlmADUZJGW8?si=BvdmdQyRkZpHp5Uq">
+                            <img src="https://i.ytimg.com/an_webp/ZlmADUZJGW8/mqdefault_6s.webp?du=3000&sqp=CIiYqsQG&rs=AOn4CLDpjZwLB_5tNULIfUoPLBDo2zit_g" alt="Thumbnail do Vídeo Arraia Minha Matões do Norte" class="w-full h-48 object-cover">
                             <div class="p-4">
                                 <h3 class="font-bold text-white">Arraia Minha Matões do Norte</h3>
                                 <p class="text-sm text-gray-400">Edição e Motion Graphics After Effects</p>
@@ -195,39 +194,40 @@
                         </div>
                     </div>
 
-                    <!-- Item de Design 1 -->
+                    <!-- Item de Design 1 (Vídeo) -->
                     <div class="portfolio-item-container reveal" data-category="design">
                         <div class="portfolio-item bg-gray-800 rounded-lg overflow-hidden cursor-pointer" 
                              data-type="video" 
-                             data-source="LOGO BRANCA.png">
-                            <img src="https://i.ytimg.com/an_webp/h7ThSpC249U/mqdefault_6s.webp?du=3000&sqp=CL-EqsQG&rs=AOn4CLCpg0KwEqHL-k3ROi42xu4iD5VJLA" alt="Imagem do Projeto de Design" class="w-full h-48 object-cover">
+                             data-source="https://www.youtube.com/embed/h7ThSpC249U?si=xqr9ODvl7dbZJEKB">
+                            <img src="https://i.ytimg.com/an_webp/h7ThSpC249U/mqdefault_6s.webp?du=3000&sqp=CL-EqsQG&rs=AOn4CLCpg0KwEqHL-k3ROi42xu4iD5VJLA" alt="Thumbnail do Vídeo Convenção Partidária" class="w-full h-48 object-cover">
                             <div class="p-4">
-                                <h3 class="font-bold text-white">Identidade Visual</h3>
-                                <p class="text-sm text-gray-400">Branding</p>
+                                <h3 class="font-bold text-white">Convenção Partidária</h3>
+                                <p class="text-sm text-gray-400">After Effects e Premiere</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Item de Vídeo 2 (CORRIGIDO) -->
+                    <!-- Item de Vídeo 2 -->
                     <div class="portfolio-item-container reveal" data-category="video">
                         <div class="portfolio-item bg-gray-800 rounded-lg overflow-hidden cursor-pointer" 
                              data-type="video" 
-                             data-source="https://www.youtube.com/embed/Il4Do6JbWPQ?si=yA8L7wSu4SKxGuLG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>">
-                             <img src="https://i.ytimg.com/an_webp/Il4Do6JbWPQ/mqdefault_6s.webp?du=3000&sqp=CJCRqsQG&rs=AOn4CLCx4uAGmW2bmGZVA-0xo8tzht6QNA" alt="Thumbnail do Vídeo" class="w-full h-48 object-cover">
+                             data-source="https://www.youtube.com/embed/Il4Do6JbWPQ?si=yA8L7wSu4SKxGuLG">
+                            <img src="https://i.ytimg.com/an_webp/Il4Do6JbWPQ/mqdefault_6s.webp?du=3000&sqp=CJCRqsQG&rs=AOn4CLCx4uAGmW2bmGZVA-0xo8tzht6QNA" alt="Thumbnail do Vídeo Entrega de Peixe" class="w-full h-48 object-cover">
                             <div class="p-4">
                                 <h3 class="font-bold text-white">Entrega de Peixe - Matões do Norte</h3>
-                                <p class="text-sm text-gray-400">Edição usando Premiere e Photoshop para criação de elementos</p>
+                                <p class="text-sm text-gray-400">Edição usando Premiere e Photoshop</p>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Item de Design 2 -->
+                    <!-- Item de Design 2 (Vídeo) -->
                     <div class="portfolio-item-container reveal" data-category="design">
-                        <div class="portfolio-item bg-gray-800 rounded-lg overflow-hidden cursor-pointer" data-type="image" data-source="https://i.ytimg.com/an_webp/nyeFJUCsihk/mqdefault_6s.webp?du=3000&sqp=CIvuqcQG&rs=AOn4CLDZXHF9mydCkm3PYHxywjwEEfNFbQ">
-                            <img src="https://i.ytimg.com/an_webp/nyeFJUCsihk/mqdefault_6s.webp?du=3000&sqp=CIvuqcQG&rs=AOn4CLDZXHF9mydCkm3PYHxywjwEEfNFbQ" alt="Imagem do Projeto de Design" class="w-full h-48 object-cover">
+                        <div class="portfolio-item bg-gray-800 rounded-lg overflow-hidden cursor-pointer" data-type="video"
+                         data-source="https://www.youtube.com/embed/nyeFJUCsihk?si=xxpbfHCstQLwxScO">
+                            <img src="https://i.ytimg.com/an_webp/nyeFJUCsihk/mqdefault_6s.webp?du=3000&sqp=CIvuqcQG&rs=AOn4CLDZXHF9mydCkm3PYHxywjwEEfNFbQ" alt="Thumbnail do Vídeo Festa da Vitória" class="w-full h-48 object-cover">
                             <div class="p-4">
-                                <h3 class="font-bold text-white">Material para Redes Sociais</h3>
-                                <p class="text-sm text-gray-400">Social Media</p>
+                                <h3 class="font-bold text-white">Festa da Vitória</h3>
+                                <p class="text-sm text-gray-400">Premiere e Photoshop</p>
                             </div>
                         </div>
                     </div>
@@ -240,11 +240,11 @@
             <div class="container mx-auto px-6 reveal">
                 <h3 class="text-center text-2xl font-semibold text-gray-400 mb-8">Empresas e Orgãos Públicos que confiaram no meu trabalho</h3>
                 <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-                    <img src="LOGO COOPBRAS.png" alt="Logo Cliente 1" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
-                    <img src="MATOES.png" alt="Logo Cliente 2" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
-                    <img src="EMI DIGITAL.png" alt="Logo Cliente 3" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
-                    <img src="DISK.png" alt="Logo Cliente 3" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
-                    <img src="miranda.png" alt="Logo Cliente 3" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
+                    <img src="LOGO COOPBRAS.png" alt="Logo Cliente Coopbras" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
+                    <img src="MATOES.png" alt="Logo Cliente Prefeitura de Matões do Norte" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
+                    <img src="EMI DIGITAL.png" alt="Logo Cliente EMI Digital" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
+                    <img src="DISK.png" alt="Logo Cliente Disk Gelada+" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
+                    <img src="miranda.png" alt="Logo Cliente Miranda do Norte" class="h-12 md:h-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
                 </div>
             </div>
         </section>
@@ -285,7 +285,7 @@
                     Mande um E-mail
                 </a>
                 <div class="mt-10 flex justify-center space-x-6 text-2xl text-gray-400">
-                    <a href="https://www.instagram.com/felipecamposd2/" class="hover:text-orange-500 transition"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/felipecamposd2/" target="_blank" class="hover:text-orange-500 transition"><i class="fab fa-instagram"></i></a>
                     <a href="#" class="hover:text-orange-500 transition"><i class="fab fa-linkedin"></i></a>
                     <a href="#" class="hover:text-orange-500 transition"><i class="fab fa-youtube"></i></a>
                 </div>
@@ -306,8 +306,7 @@
         <button id="modal-close" class="absolute top-4 right-6 text-white text-4xl font-bold">&times;</button>
     </div>
 
-    <!-- Botão Flutuante do WhatsApp (NOVO) -->
-    <!-- Altere o número de telefone para o seu, incluindo o código do país (55 para o Brasil) -->
+    <!-- Botão Flutuante do WhatsApp -->
     <a href="https://wa.me/5598985618994?text=Olá!%20Vi%20seu%20portfólio%20e%20gostaria%20de%20saber%20mais." 
        target="_blank" 
        class="whatsapp-button"
@@ -342,8 +341,8 @@
             const nextBtn = document.getElementById('next-testimonial');
             const prevBtn = document.getElementById('prev-testimonial');
             let currentIndex = 0;
-            const totalItems = items.length;
-            if (totalItems > 1) {
+            if (items.length > 1) {
+                const totalItems = items.length;
                 nextBtn.addEventListener('click', () => {
                     currentIndex = (currentIndex + 1) % totalItems;
                     track.style.transform = `translateX(-${currentIndex * 100}%)`;
@@ -359,13 +358,21 @@
             const portfolioItems = document.querySelectorAll('.portfolio-item-container');
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => b.classList.remove('active', 'bg-orange-500', 'text-white'));
-                    filterBtns.forEach(b => b.classList.add('bg-gray-700', 'text-gray-300'));
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-orange-500', 'text-white');
+                        b.classList.add('bg-gray-700', 'text-gray-300');
+                    });
                     btn.classList.add('active', 'bg-orange-500', 'text-white');
                     btn.classList.remove('bg-gray-700', 'text-gray-300');
+                    
                     const filter = btn.getAttribute('data-filter');
                     portfolioItems.forEach(item => {
-                        item.style.display = (filter === 'all' || item.getAttribute('data-category') === filter) ? 'block' : 'none';
+                        const category = item.getAttribute('data-category');
+                        if (filter === 'all' || category === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
                     });
                 });
             });
@@ -375,32 +382,40 @@
             const modalContent = document.getElementById('modal-content');
             const modalClose = document.getElementById('modal-close');
             const portfolioGrid = document.getElementById('portfolio-grid');
+
             portfolioGrid.addEventListener('click', (e) => {
                 const item = e.target.closest('.portfolio-item');
                 if (!item) return;
+
                 const type = item.dataset.type;
                 const source = item.dataset.source;
+
                 if (type === 'image') {
                     modalContent.innerHTML = `<img src="${source}" alt="Projeto em detalhe" class="max-w-full max-h-[80vh] rounded-lg">`;
                 } else if (type === 'video') {
                     modalContent.innerHTML = `<div class="aspect-w-16 aspect-h-9 w-[90vw] max-w-6xl"><iframe src="${source}?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full rounded-lg"></iframe></div>`;
                 }
+                
                 modal.classList.remove('hidden');
                 setTimeout(() => modal.classList.remove('opacity-0'), 10);
             });
+
             function closeModal() {
                 modal.classList.add('opacity-0');
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                    modalContent.innerHTML = '';
+                    modalContent.innerHTML = ''; // Limpa o conteúdo para parar vídeos
                 }, 300);
             }
+
             modalClose.addEventListener('click', closeModal);
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal();
+                if (e.target === modal) {
+                    closeModal();
+                }
             });
 
-            // --- Configuração das Partículas (NOVO) ---
+            // --- Configuração das Partículas ---
             tsParticles.load("tsparticles", {
                 fullScreen: { enable: false },
                 background: { color: { value: "transparent" } },
