@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MELHOR DO QUE JOGO DO BICHO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <style>
+        /* --- ESTILOS VISUAIS --- */
+        body {
+            background-color: #050510;
+            background-image: radial-gradient(circle at center, #1a0b00, #000);
+            font-family: 'Verdana', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+            user-select: none;
+            overflow-x: hidden;
+            padding-bottom: 20px;
+        }
+
+        /* O Ritmo Visual - Borda pulsante */
+        @keyframes pulseBeat {
+            0% { box-shadow: 0 0 20px #ff0055; border-color: #ff0055; }
+            50% { box-shadow: 0 0 50px #ff00de; border-color: #ff00de; }
+            100% { box-shadow: 0 0 20px #ff0055; border-color: #ff0055; }
+        }
+
+        .beat-pulse {
+            animation: pulseBeat 0.42s infinite; /* Sincronizado com 140BPM */
+        }
+
+        .machine-container {
+            background: linear-gradient(180deg, #2b003b, #12001f);
+            padding: 30px;
+            border-radius: 25px;
+            border: 5px solid #ff0055;
+            box-shadow: 0 0 50px rgba(255, 0, 85, 0.4);
+            text-align: center;
+            width: 400px;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.1s;
+        }
+
+        h1 {
+            font-family: 'Russo One', sans-serif;
+            margin: 0 0 20px 0;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ff0055, #ffcc00); 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 32px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+        }
+
+        /* --- HUD (Painel de Info) --- */
+        .hud-container {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .hud-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: bold; font-size: 14px; text-transform: uppercase; color: #aaa; }
+        .balance-text { color: #00ffaa; font-size: 24px; text-shadow: 0 0 10px rgba(0,255,170,0.5); font-family: 'Courier New', monospace; }
+
+        input[type="number"] {
+            background: #111; border: 1px solid #555; color: #fff; font-size: 18px; 
+            width: 90px; padding: 8px; text-align: center; border-radius: 5px; font-weight: bold;
+        }
+
+        /* --- ROLOS (Reels) --- */
+        .reels-container {
+            display: flex; justify-content: space-between; gap: 10px;
+            background-color: #000; padding: 10px; border-radius: 15px;
+            margin-bottom: 25px; box-shadow: inset 0 0 20px #000; border: 2px solid #333;
+        }
+
+        .reel {
+            background: #fff; width: 100px; height: 100px; border-radius: 10px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 60px; color: #333; overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+            border: 2px solid #d4af37; /* Borda dourada */
+        }
+        .spinning { filter: blur(5px) brightness(0.8); transform: translateY(-2px); transition: 0.1s; }
+
+        /* --- BOTÃO --- */
+        #spinBtn {
+            background: linear-gradient(90deg, #ff930f, #fff95b);
+            color: #4a0e0e; border: none; padding: 20px 0; width: 100%;
+            font-size: 24px; font-weight: 900; border-radius: 12px;
+            font-family: 'Russo One', sans-serif;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 5px 0 #b86e00, 0 10px 20px rgba(255, 147, 15, 0.4);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        #spinBtn:active { transform: translateY(5px); box-shadow: 0 0 0 #b86e00; }
+        #spinBtn:disabled { background: #555; color: #888; box-shadow: none; cursor: not-allowed; transform: translateY(5px); }
+
+        /* --- PAINEL DE CONTROLE / CHEAT --- */
+        .admin-panel {
+            margin-top: 30px;
+            background: #1a1a2e;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px dashed #444;
+            width: 400px;
+            text-align: center;
+        }
+        .slider-container {
+            display: flex; align-items: center; gap: 10px; margin-top: 10px;
+            color: #00d2d3; font-weight: bold;
+        }
+        input[type=range] { flex-grow: 1; accent-color: #ff00de; cursor: pointer; }
+
+        /* --- OVERLAY DE VITÓRIA --- */
+        #winOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 9999;
+            display: none;
+            flex-direction: column; justify-content: center; align-items: center;
+            animation: fadeIn 0.3s ease-out;
+            backdrop-filter: blur(8px);
+        }
+
+        .sunburst {
+            position: absolute; width: 200vw; height: 200vw;
+            background: repeating-conic-gradient(from 0deg, rgba(255, 215, 0, 0.1) 0deg 15deg, transparent 15deg 30deg);
+            animation: rotateSun 20s linear infinite;
+            z-index: -1;
+        }
+
+        .win-title {
+            font-family: 'Russo One', sans-serif;
+            font-size: 70px; 
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            transform: scale(0);
+            animation: elasticPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            padding: 0 20px;
+        }
+        
+        /* CORES DOS NÍVEIS DE VITÓRIA */
+        .tier-ganho { color: #ffffff; -webkit-text-stroke: 3px #d35400; text-shadow: 0 0 30px rgba(211, 84, 0, 0.8); }
+        .tier-grande { color: #ffeb3b; -webkit-text-stroke: 3px #b86e00; text-shadow: 0 0 40px rgba(255, 204, 0, 0.9); }
+        .tier-super { color: #00e5ff; -webkit-text-stroke: 3px #006064; text-shadow: 0 0 50px rgba(0, 229, 255, 1); }
+        .tier-mega { color: #e040fb; -webkit-text-stroke: 3px #4a148c; text-shadow: 0 0 60px rgba(224, 64, 251, 1); font-size: 80px; }
+        .tier-super-mega { 
+            background: linear-gradient(to bottom, #ffd700, #ff8c00); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; -webkit-text-stroke: 3px #fff; 
+            filter: drop-shadow(0 0 20px gold); font-size: 85px; 
+        }
+
+        .win-amount {
+            font-family: 'Russo One', sans-serif; font-size: 90px; color: #fff;
+            text-shadow: 4px 4px 0 #000, 0 0 40px rgba(255, 255, 255, 0.5);
+            margin-top: 10px; transform: scale(0);
+            animation: elasticPop 0.8s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .continue-msg {
+            margin-top: 50px; color: #fff; font-size: 18px; 
+            opacity: 0; animation: blink 2s infinite 1s forwards;
+            font-weight: bold; letter-spacing: 2px;
+        }
+
+        /* --- MÚSICA BTN --- */
+        #musicToggle {
+            background: #ff0055; color: white; border: none; padding: 5px 15px;
+            border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 12px;
+            box-shadow: 0 0 10px #ff0055; transition: 0.3s;
+        }
+        #musicToggle:hover { transform: scale(1.1); }
+        #musicToggle.off { background: #333; box-shadow: none; color: #777; }
+
+        /* Moedas caindo */
+        .coin {
+            position: fixed; width: 50px; height: 50px; background: gold;
+            border-radius: 50%; border: 4px solid #daa520;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: bold; color: #b86e00; font-family: 'Russo One'; font-size: 24px;
+            z-index: 10000; animation: fallDown 2.5s linear forwards;
+            box-shadow: 0 0 15px gold;
+        }
+
+        @keyframes rotateSun { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes elasticPop { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes blink { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        @keyframes fallDown { to { transform: translateY(110vh) rotate(720deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="winOverlay" onclick="closeOverlay()">
+        <div class="sunburst"></div>
+        <div id="winTitle" class="win-title">GRANDE GANHO</div>
+        <div id="winAmount" class="win-amount">150,00</div>
+        <div class="continue-msg">TOQUE PARA CONTINUAR</div>
+    </div>
+
+    <div class="machine-container beat-pulse" id="machine">
+        <h1>⚡ FELIPE GAMES ⚡</h1>
+        
+        <div class="hud-container">
+            <div class="hud-row">
+                <span>Trilha Sonora</span>
+                <button id="musicToggle" onclick="toggleMusic()">SOM: OFF 🔇</button>
+            </div>
+            <div class="hud-row">
+                <span>SEU SALDO</span>
+                <span id="balanceDisplay" class="balance-text">R$ 100,00</span>
+            </div>
+            <div class="hud-row" style="margin-top: 15px;">
+                <label>APOSTA:</label>
+                <input type="number" id="betInput" value="10" min="1">
+            </div>
+        </div>
+
+        <div class="reels-container">
+            <div class="reel" id="reel1">🐯</div>
+            <div class="reel" id="reel2">🐯</div>
+            <div class="reel" id="reel3">🐯</div>
+        </div>
+
+        <button id="spinBtn" onclick="spin()">GIRAR AGORA!</button>
+    </div>
+
+    <div class="admin-panel">
+        <label style="color: #aaa; font-size: 12px; text-transform: uppercase;">🎛️ Painel do Desenvolvedor (Cheat)</label>
+        <div class="slider-container">
+            <span>AZAR</span>
+            <input type="range" id="probInput" min="0" max="100" value="40" oninput="updateProb(this.value)">
+            <span>SORTE</span>
+        </div>
+        <div style="margin-top: 5px; color: white;">
+            Probabilidade: <span id="probDisplay" style="color: #ff00de; font-size: 18px;">40</span>%
+        </div>
+    </div>
+
+    <script>
+        // --- NOVO MOTOR DE ÁUDIO "VICIANTE" ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let isMusicPlaying = false;
+        let step = 0;
+        let timerID;
+
+        // Notas em sequência (Arpejo C Major 7) para efeito hipnótico
+        const melodySequence = [
+            523.25, 659.25, 783.99, 1046.50, // C E G C(high)
+            783.99, 659.25, 523.25, 392.00,  // G E C G(low)
+            523.25, 659.25, 783.99, 987.77,  // C E G B
+            1046.50, 783.99, 659.25, 523.25  // C G E C
+        ];
+
+        function playNote(freq, type, vol, dur) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+            
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + dur);
+        }
+
+        function startAddictiveLoop() {
+            if(!isMusicPlaying) return;
+
+            // BPM 140
+            const noteDuration = 0.107; 
+            const time = audioCtx.currentTime;
+
+            // 1. Melodia Hipnótica
+            const note = melodySequence[step % 16];
+            const currentVol = (step % 4 === 0) ? 0.08 : 0.04; 
+            playNote(note, 'square', currentVol, 0.1);
+
+            // 2. Baixo Pulsante
+            if (step % 4 === 2 || step % 4 === 0) {
+                const oscBass = audioCtx.createOscillator();
+                const gainBass = audioCtx.createGain();
+                oscBass.connect(gainBass); gainBass.connect(audioCtx.destination);
+                oscBass.frequency.setValueAtTime(150, time);
+                oscBass.frequency.exponentialRampToValueAtTime(40, time + 0.15);
+                gainBass.gain.setValueAtTime(0.3, time);
+                gainBass.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
+                oscBass.start(time); oscBass.stop(time + 0.15);
+            }
+
+            // 3. Hi-Hat
+            if (step % 2 === 0) {
+                 const bufferSize = audioCtx.sampleRate * 0.05;
+                 const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                 const data = buffer.getChannelData(0);
+                 for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                 const noise = audioCtx.createBufferSource();
+                 noise.buffer = buffer;
+                 const gainNoise = audioCtx.createGain();
+                 noise.connect(gainNoise); gainNoise.connect(audioCtx.destination);
+                 gainNoise.gain.value = 0.05;
+                 noise.start(time);
+            }
+
+            step++;
+            timerID = setTimeout(startAddictiveLoop, 107);
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById('musicToggle');
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            
+            isMusicPlaying = !isMusicPlaying;
+            if(isMusicPlaying) {
+                btn.innerText = "SOM: ON 🔊";
+                btn.classList.add('on');
+                step = 0;
+                startAddictiveLoop();
+            } else {
+                btn.innerText = "SOM: OFF 🔇";
+                btn.classList.remove('on');
+                clearTimeout(timerID);
+            }
+        }
+
+        // --- LÓGICA DO JOGO ---
+        const symbols = ['🍊', '🧧', '🧨', '💰', '💎', '🐯'];
+        
+        // TABELA DE PRÊMIOS
+        const payTable = {
+            '🍊': { mult: 2,   tier: 'GANHO',             class: 'tier-ganho' },
+            '🧧': { mult: 3,   tier: 'GANHO',             class: 'tier-ganho' },
+            '🧨': { mult: 5,   tier: 'GRANDE<br>GANHO',   class: 'tier-grande' },
+            '💰': { mult: 10,  tier: 'SUPER<br>GANHO',    class: 'tier-super' },
+            '💎': { mult: 20,  tier: 'MEGA<br>GANHO',     class: 'tier-mega'  },
+            '🐯': { mult: 50,  tier: 'SUPER MEGA<br>GANHO', class: 'tier-super-mega' }
+        };
+
+        let balance = 100;
+        let winChance = 40;
+        const reels = [document.getElementById('reel1'), document.getElementById('reel2'), document.getElementById('reel3')];
+        const overlay = document.getElementById('winOverlay');
+        const titleEl = document.getElementById('winTitle');
+        const amountEl = document.getElementById('winAmount');
+
+        function updateProb(val) {
+            winChance = parseInt(val);
+            document.getElementById('probDisplay').innerText = val;
+        }
+
+        function spin() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const bet = parseInt(document.getElementById('betInput').value);
+            
+            if(bet > balance) { alert("Saldo Insuficiente!"); return; }
+            if(isNaN(bet) || bet <= 0) { alert("Aposta inválida"); return; }
+            
+            balance -= bet;
+            updateBalanceUI();
+            
+            document.getElementById('spinBtn').disabled = true;
+            reels.forEach(r => {
+                r.classList.add('spinning');
+                r.innerText = '❓'; 
+            });
+
+            // Som de Giro
+            playSound(100, 800, 0.5, 'sawtooth');
+
+            let result = [];
+            const isWin = Math.random() * 100 < winChance;
+
+            if(isWin) {
+                const s = symbols[Math.floor(Math.random() * symbols.length)];
+                result = [s, s, s];
+            } else {
+                result = [
+                    symbols[Math.floor(Math.random() * symbols.length)],
+                    symbols[Math.floor(Math.random() * symbols.length)],
+                    symbols[Math.floor(Math.random() * symbols.length)]
+                ];
+                if(result[0] == result[1] && result[1] == result[2]) {
+                    result[2] = symbols[(symbols.indexOf(result[2]) + 1) % symbols.length];
+                }
+            }
+
+            // Parada
+            let delay = 400; 
+            reels.forEach((reel, i) => {
+                setTimeout(() => {
+                    reel.classList.remove('spinning');
+                    reel.innerText = result[i];
+                    playNote(200, 'triangle', 0.2, 0.1);
+                    
+                    if(i === 2) {
+                        setTimeout(() => checkResult(result, bet), 300);
+                    }
+                }, delay);
+                delay += 400;
+            });
+        }
+
+        function playSound(fStart, fEnd, dur, type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.type = type;
+            const now = audioCtx.currentTime;
+            osc.frequency.setValueAtTime(fStart, now);
+            osc.frequency.linearRampToValueAtTime(fEnd, now + dur);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.linearRampToValueAtTime(0, now + dur);
+            osc.start(now); osc.stop(now + dur);
+        }
+
+        function checkResult(result, bet) {
+            document.getElementById('spinBtn').disabled = false;
+            
+            if(result[0] === result[1] && result[1] === result[2]) {
+                const sym = result[0];
+                const info = payTable[sym];
+                const winAmount = bet * info.mult;
+                
+                balance += winAmount;
+                updateBalanceUI();
+                
+                showWinScreen(info.tier, winAmount, info.class);
+            }
+        }
+
+        function showWinScreen(text, amount, cssClass) {
+            titleEl.innerHTML = text; 
+            titleEl.className = "win-title " + cssClass;
+            amountEl.innerHTML = "";
+            overlay.style.display = 'flex';
+            animateValue(amountEl, 0, amount, 1500);
+            playWinSound();
+            spawnCoins(50);
+        }
+
+        function closeOverlay() {
+            overlay.style.display = 'none';
+        }
+
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentVal = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = "R$ " + currentVal.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function playWinSound() {
+            const now = audioCtx.currentTime;
+            const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98, 2093.00]; 
+            notes.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.value = freq;
+                osc.start(now + i*0.08); 
+                osc.stop(now + i*0.08 + 0.4);
+                gain.gain.setValueAtTime(0.1, now + i*0.08);
+                gain.gain.linearRampToValueAtTime(0, now + i*0.08 + 0.4);
+            });
+        }
+
+        function spawnCoins(amount) {
+            for(let i=0; i<amount; i++) {
+                const coin = document.createElement('div');
+                coin.classList.add('coin');
+                coin.innerText = "R$";
+                coin.style.left = Math.random() * 95 + "vw";
+                coin.style.top = -100 + "px";
+                coin.style.animationDuration = (Math.random() * 2 + 1.5) + "s";
+                document.body.appendChild(coin);
+                setTimeout(() => coin.remove(), 4000);
+            }
+        }
+
+        function updateBalanceUI() {
+            document.getElementById('balanceDisplay').innerText = "R$ " + balance.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+        }
+    </script>
+</body>
+</html>
