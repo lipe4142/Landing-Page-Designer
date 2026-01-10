@@ -2,11 +2,16 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MELHOR DO QUE JOGO DO BICHO</title>
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS VISUAIS --- */
+        /* --- RESET & GLOBAIS --- */
+        * {
+            box-sizing: border-box; /* Essencial para responsividade */
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             background-color: #050510;
             background-image: radial-gradient(circle at center, #1a0b00, #000);
@@ -20,42 +25,46 @@
             color: white;
             user-select: none;
             overflow-x: hidden;
-            padding-bottom: 20px;
+            padding: 20px 10px; /* Espaço lateral para mobile */
         }
 
         /* O Ritmo Visual - Borda pulsante */
         @keyframes pulseBeat {
-            0% { box-shadow: 0 0 20px #ff0055; border-color: #ff0055; }
-            50% { box-shadow: 0 0 50px #ff00de; border-color: #ff00de; }
-            100% { box-shadow: 0 0 20px #ff0055; border-color: #ff0055; }
+            0% { box-shadow: 0 0 10px #ff0055; border-color: #ff0055; }
+            50% { box-shadow: 0 0 30px #ff00de; border-color: #ff00de; }
+            100% { box-shadow: 0 0 10px #ff0055; border-color: #ff0055; }
         }
 
         .beat-pulse {
-            animation: pulseBeat 0.42s infinite; /* Sincronizado com 140BPM */
+            animation: pulseBeat 0.42s infinite;
         }
 
+        /* --- CONTAINER DA MÁQUINA (Adaptado) --- */
         .machine-container {
             background: linear-gradient(180deg, #2b003b, #12001f);
-            padding: 30px;
-            border-radius: 25px;
-            border: 5px solid #ff0055;
-            box-shadow: 0 0 50px rgba(255, 0, 85, 0.4);
+            padding: 20px;
+            border-radius: 20px;
+            border: 3px solid #ff0055;
             text-align: center;
-            width: 400px;
+            
+            /* Responsividade Crítica */
+            width: 100%;
+            max-width: 450px; /* Limite para Desktop */
             position: relative;
             z-index: 10;
-            transition: transform 0.1s;
+            margin-bottom: 20px;
         }
 
         h1 {
             font-family: 'Russo One', sans-serif;
-            margin: 0 0 20px 0;
+            margin: 0 0 15px 0;
             text-transform: uppercase;
             background: linear-gradient(to right, #ff0055, #ffcc00); 
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 32px;
-            letter-spacing: 2px;
+            /* Fonte responsiva */
+            font-size: clamp(24px, 6vw, 32px);
+            letter-spacing: 1px;
             text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
         }
 
@@ -64,76 +73,124 @@
             background: rgba(0,0,0,0.6);
             border: 1px solid #444;
             border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: 12px;
+            margin-bottom: 15px;
             backdrop-filter: blur(5px);
         }
 
-        .hud-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: bold; font-size: 14px; text-transform: uppercase; color: #aaa; }
-        .balance-text { color: #00ffaa; font-size: 24px; text-shadow: 0 0 10px rgba(0,255,170,0.5); font-family: 'Courier New', monospace; }
+        .hud-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 8px; 
+            font-weight: bold; 
+            font-size: 12px; 
+            text-transform: uppercase; 
+            color: #aaa; 
+        }
+        
+        .balance-text { 
+            color: #00ffaa; 
+            font-size: 20px; 
+            text-shadow: 0 0 10px rgba(0,255,170,0.5); 
+            font-family: 'Courier New', monospace; 
+        }
 
         input[type="number"] {
             background: #111; border: 1px solid #555; color: #fff; font-size: 18px; 
-            width: 90px; padding: 8px; text-align: center; border-radius: 5px; font-weight: bold;
+            width: 80px; padding: 8px; text-align: center; border-radius: 5px; font-weight: bold;
         }
 
-        /* --- ROLOS (Reels) --- */
+        /* --- ROLOS (Reels) - Totalmente Fluido --- */
         .reels-container {
-            display: flex; justify-content: space-between; gap: 10px;
-            background-color: #000; padding: 10px; border-radius: 15px;
-            margin-bottom: 25px; box-shadow: inset 0 0 20px #000; border: 2px solid #333;
+            display: flex; 
+            justify-content: space-between; 
+            gap: 2%; /* Gap relativo */
+            background-color: #000; 
+            padding: 10px; 
+            border-radius: 15px;
+            margin-bottom: 20px; 
+            border: 2px solid #333;
+            box-shadow: inset 0 0 20px #000;
         }
 
         .reel {
-            background: #fff; width: 100px; height: 100px; border-radius: 10px;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 60px; color: #333; overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
-            border: 2px solid #d4af37; /* Borda dourada */
+            background: #fff; 
+            /* Largura responsiva para caber 3 lado a lado */
+            width: 32%; 
+            /* Altura baseada na largura da tela para manter proporção quadrada no mobile */
+            height: 24vw; 
+            max-height: 110px; /* Trava altura no desktop */
+            min-height: 80px;
+            
+            border-radius: 10px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            
+            /* Tamanho do emoji ajustável */
+            font-size: clamp(35px, 10vw, 60px); 
+            
+            color: #333; 
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            border: 2px solid #d4af37;
         }
-        .spinning { filter: blur(5px) brightness(0.8); transform: translateY(-2px); transition: 0.1s; }
+        
+        .spinning { 
+            filter: blur(5px) brightness(0.8); 
+            transform: translateY(-2px); 
+            transition: 0.1s; 
+        }
 
         /* --- BOTÃO --- */
         #spinBtn {
             background: linear-gradient(90deg, #ff930f, #fff95b);
-            color: #4a0e0e; border: none; padding: 20px 0; width: 100%;
-            font-size: 24px; font-weight: 900; border-radius: 12px;
+            color: #4a0e0e; border: none; 
+            padding: 18px 0; 
+            width: 100%;
+            font-size: 20px; 
+            font-weight: 900; border-radius: 12px;
             font-family: 'Russo One', sans-serif;
             cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
             box-shadow: 0 5px 0 #b86e00, 0 10px 20px rgba(255, 147, 15, 0.4);
             transition: transform 0.1s, box-shadow 0.1s;
+            /* Evitar zoom duplo no iOS ao tocar rápido */
+            touch-action: manipulation;
         }
-        #spinBtn:active { transform: translateY(5px); box-shadow: 0 0 0 #b86e00; }
-        #spinBtn:disabled { background: #555; color: #888; box-shadow: none; cursor: not-allowed; transform: translateY(5px); }
+        #spinBtn:active { transform: translateY(4px); box-shadow: 0 0 0 #b86e00; }
+        #spinBtn:disabled { background: #555; color: #888; box-shadow: none; cursor: not-allowed; transform: translateY(4px); }
 
         /* --- PAINEL DE CONTROLE / CHEAT --- */
         .admin-panel {
-            margin-top: 30px;
             background: #1a1a2e;
             padding: 15px;
             border-radius: 15px;
             border: 2px dashed #444;
-            width: 400px;
+            
+            width: 100%;
+            max-width: 450px;
+            
             text-align: center;
         }
         .slider-container {
             display: flex; align-items: center; gap: 10px; margin-top: 10px;
-            color: #00d2d3; font-weight: bold;
+            color: #00d2d3; font-weight: bold; font-size: 14px;
         }
-        input[type=range] { flex-grow: 1; accent-color: #ff00de; cursor: pointer; }
+        input[type=range] { flex-grow: 1; accent-color: #ff00de; cursor: pointer; height: 20px; }
 
-        /* --- OVERLAY DE VITÓRIA --- */
+        /* --- OVERLAY DE VITÓRIA (Responsivo) --- */
         #winOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 9999;
+            background: rgba(0,0,0,0.92); z-index: 9999;
             display: none;
             flex-direction: column; justify-content: center; align-items: center;
-            animation: fadeIn 0.3s ease-out;
             backdrop-filter: blur(8px);
+            padding: 20px;
         }
 
         .sunburst {
-            position: absolute; width: 200vw; height: 200vw;
+            position: absolute; width: 200vmax; height: 200vmax; /* Garante cobertura em qualquer orientação */
             background: repeating-conic-gradient(from 0deg, rgba(255, 215, 0, 0.1) 0deg 15deg, transparent 15deg 30deg);
             animation: rotateSun 20s linear infinite;
             z-index: -1;
@@ -141,57 +198,60 @@
 
         .win-title {
             font-family: 'Russo One', sans-serif;
-            font-size: 70px; 
+            
+            /* Clamping para texto gigante caber no celular */
+            font-size: clamp(40px, 12vw, 80px);
+            
             text-transform: uppercase;
             text-align: center;
             line-height: 1.1;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             transform: scale(0);
             animation: elasticPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            padding: 0 20px;
         }
         
-        /* CORES DOS NÍVEIS DE VITÓRIA */
-        .tier-ganho { color: #ffffff; -webkit-text-stroke: 3px #d35400; text-shadow: 0 0 30px rgba(211, 84, 0, 0.8); }
-        .tier-grande { color: #ffeb3b; -webkit-text-stroke: 3px #b86e00; text-shadow: 0 0 40px rgba(255, 204, 0, 0.9); }
-        .tier-super { color: #00e5ff; -webkit-text-stroke: 3px #006064; text-shadow: 0 0 50px rgba(0, 229, 255, 1); }
-        .tier-mega { color: #e040fb; -webkit-text-stroke: 3px #4a148c; text-shadow: 0 0 60px rgba(224, 64, 251, 1); font-size: 80px; }
+        .tier-ganho { color: #ffffff; -webkit-text-stroke: 2px #d35400; text-shadow: 0 0 30px rgba(211, 84, 0, 0.8); }
+        .tier-grande { color: #ffeb3b; -webkit-text-stroke: 2px #b86e00; text-shadow: 0 0 40px rgba(255, 204, 0, 0.9); }
+        .tier-super { color: #00e5ff; -webkit-text-stroke: 2px #006064; text-shadow: 0 0 50px rgba(0, 229, 255, 1); }
+        .tier-mega { color: #e040fb; -webkit-text-stroke: 2px #4a148c; text-shadow: 0 0 60px rgba(224, 64, 251, 1); }
         .tier-super-mega { 
             background: linear-gradient(to bottom, #ffd700, #ff8c00); -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; -webkit-text-stroke: 3px #fff; 
-            filter: drop-shadow(0 0 20px gold); font-size: 85px; 
+            -webkit-text-fill-color: transparent; -webkit-text-stroke: 1px #fff; 
+            filter: drop-shadow(0 0 10px gold); 
         }
 
         .win-amount {
-            font-family: 'Russo One', sans-serif; font-size: 90px; color: #fff;
-            text-shadow: 4px 4px 0 #000, 0 0 40px rgba(255, 255, 255, 0.5);
+            font-family: 'Russo One', sans-serif; 
+            font-size: clamp(50px, 15vw, 90px);
+            color: #fff;
+            text-shadow: 3px 3px 0 #000, 0 0 30px rgba(255, 255, 255, 0.5);
             margin-top: 10px; transform: scale(0);
             animation: elasticPop 0.8s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         .continue-msg {
-            margin-top: 50px; color: #fff; font-size: 18px; 
+            margin-top: 40px; color: #fff; font-size: 16px; 
             opacity: 0; animation: blink 2s infinite 1s forwards;
-            font-weight: bold; letter-spacing: 2px;
+            font-weight: bold; letter-spacing: 2px; text-align: center;
         }
 
         /* --- MÚSICA BTN --- */
         #musicToggle {
-            background: #ff0055; color: white; border: none; padding: 5px 15px;
-            border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 12px;
+            background: #ff0055; color: white; border: none; padding: 8px 15px;
+            border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 11px;
             box-shadow: 0 0 10px #ff0055; transition: 0.3s;
         }
-        #musicToggle:hover { transform: scale(1.1); }
-        #musicToggle.off { background: #333; box-shadow: none; color: #777; }
+        #musicToggle:hover { transform: scale(1.05); }
 
         /* Moedas caindo */
         .coin {
-            position: fixed; width: 50px; height: 50px; background: gold;
-            border-radius: 50%; border: 4px solid #daa520;
+            position: fixed; width: 40px; height: 40px; background: gold;
+            border-radius: 50%; border: 3px solid #daa520;
             display: flex; justify-content: center; align-items: center;
-            font-weight: bold; color: #b86e00; font-family: 'Russo One'; font-size: 24px;
+            font-weight: bold; color: #b86e00; font-family: 'Russo One'; font-size: 20px;
             z-index: 10000; animation: fallDown 2.5s linear forwards;
-            box-shadow: 0 0 15px gold;
+            box-shadow: 0 0 10px gold;
+            pointer-events: none;
         }
 
         @keyframes rotateSun { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -238,30 +298,29 @@
     </div>
 
     <div class="admin-panel">
-        <label style="color: #aaa; font-size: 12px; text-transform: uppercase;">🎛️ Painel do Desenvolvedor (Cheat)</label>
+        <label style="color: #aaa; font-size: 11px; text-transform: uppercase;">🎛️ Painel do Desenvolvedor (Cheat)</label>
         <div class="slider-container">
             <span>AZAR</span>
             <input type="range" id="probInput" min="0" max="100" value="40" oninput="updateProb(this.value)">
             <span>SORTE</span>
         </div>
-        <div style="margin-top: 5px; color: white;">
-            Probabilidade: <span id="probDisplay" style="color: #ff00de; font-size: 18px;">40</span>%
+        <div style="margin-top: 5px; color: white; font-size: 14px;">
+            Probabilidade: <span id="probDisplay" style="color: #ff00de; font-size: 16px;">40</span>%
         </div>
     </div>
 
     <script>
-        // --- NOVO MOTOR DE ÁUDIO "VICIANTE" ---
+        // --- MOTOR DE ÁUDIO (IDÊNTICO AO ORIGINAL) ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         let isMusicPlaying = false;
         let step = 0;
         let timerID;
 
-        // Notas em sequência (Arpejo C Major 7) para efeito hipnótico
         const melodySequence = [
-            523.25, 659.25, 783.99, 1046.50, // C E G C(high)
-            783.99, 659.25, 523.25, 392.00,  // G E C G(low)
-            523.25, 659.25, 783.99, 987.77,  // C E G B
-            1046.50, 783.99, 659.25, 523.25  // C G E C
+            523.25, 659.25, 783.99, 1046.50,
+            783.99, 659.25, 523.25, 392.00,
+            523.25, 659.25, 783.99, 987.77,
+            1046.50, 783.99, 659.25, 523.25
         ];
 
         function playNote(freq, type, vol, dur) {
@@ -282,16 +341,13 @@
         function startAddictiveLoop() {
             if(!isMusicPlaying) return;
 
-            // BPM 140
             const noteDuration = 0.107; 
             const time = audioCtx.currentTime;
 
-            // 1. Melodia Hipnótica
             const note = melodySequence[step % 16];
             const currentVol = (step % 4 === 0) ? 0.08 : 0.04; 
             playNote(note, 'square', currentVol, 0.1);
 
-            // 2. Baixo Pulsante
             if (step % 4 === 2 || step % 4 === 0) {
                 const oscBass = audioCtx.createOscillator();
                 const gainBass = audioCtx.createGain();
@@ -303,7 +359,6 @@
                 oscBass.start(time); oscBass.stop(time + 0.15);
             }
 
-            // 3. Hi-Hat
             if (step % 2 === 0) {
                  const bufferSize = audioCtx.sampleRate * 0.05;
                  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -341,13 +396,12 @@
         // --- LÓGICA DO JOGO ---
         const symbols = ['🍊', '🧧', '🧨', '💰', '💎', '🐯'];
         
-        // TABELA DE PRÊMIOS
         const payTable = {
-            '🍊': { mult: 2,   tier: 'GANHO',             class: 'tier-ganho' },
-            '🧧': { mult: 3,   tier: 'GANHO',             class: 'tier-ganho' },
-            '🧨': { mult: 5,   tier: 'GRANDE<br>GANHO',   class: 'tier-grande' },
-            '💰': { mult: 10,  tier: 'SUPER<br>GANHO',    class: 'tier-super' },
-            '💎': { mult: 20,  tier: 'MEGA<br>GANHO',     class: 'tier-mega'  },
+            '🍊': { mult: 2,   tier: 'GANHO',            class: 'tier-ganho' },
+            '🧧': { mult: 3,   tier: 'GANHO',            class: 'tier-ganho' },
+            '🧨': { mult: 5,   tier: 'GRANDE<br>GANHO',  class: 'tier-grande' },
+            '💰': { mult: 10,  tier: 'SUPER<br>GANHO',   class: 'tier-super' },
+            '💎': { mult: 20,  tier: 'MEGA<br>GANHO',    class: 'tier-mega'  },
             '🐯': { mult: 50,  tier: 'SUPER MEGA<br>GANHO', class: 'tier-super-mega' }
         };
 
@@ -365,11 +419,15 @@
 
         function spin() {
             if(audioCtx.state === 'suspended') audioCtx.resume();
-            const bet = parseInt(document.getElementById('betInput').value);
+            const betInput = document.getElementById('betInput');
+            const bet = parseInt(betInput.value);
             
             if(bet > balance) { alert("Saldo Insuficiente!"); return; }
             if(isNaN(bet) || bet <= 0) { alert("Aposta inválida"); return; }
             
+            // Esconde teclado no mobile ao girar
+            betInput.blur();
+
             balance -= bet;
             updateBalanceUI();
             
@@ -379,7 +437,6 @@
                 r.innerText = '❓'; 
             });
 
-            // Som de Giro
             playSound(100, 800, 0.5, 'sawtooth');
 
             let result = [];
@@ -399,7 +456,6 @@
                 }
             }
 
-            // Parada
             let delay = 400; 
             reels.forEach((reel, i) => {
                 setTimeout(() => {
@@ -490,8 +546,9 @@
                 const coin = document.createElement('div');
                 coin.classList.add('coin');
                 coin.innerText = "R$";
-                coin.style.left = Math.random() * 95 + "vw";
-                coin.style.top = -100 + "px";
+                // Ajustado para vw para evitar scroll horizontal
+                coin.style.left = Math.random() * 90 + "vw"; 
+                coin.style.top = -50 + "px";
                 coin.style.animationDuration = (Math.random() * 2 + 1.5) + "s";
                 document.body.appendChild(coin);
                 setTimeout(() => coin.remove(), 4000);
