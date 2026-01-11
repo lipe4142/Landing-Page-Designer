@@ -135,12 +135,22 @@
             overflow: hidden;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
             border: 2px solid #d4af37;
+            transition: transform 0.1s; /* Suaviza a parada */
         }
         
+        /* --- ANIMAÇÃO DE GIRO MODIFICADA --- */
+        @keyframes spinBlur {
+            0% { transform: translateY(0) scale(1); filter: blur(0px); }
+            25% { transform: translateY(-10px) scale(0.9); filter: blur(2px); }
+            50% { transform: translateY(10px) scale(0.9); filter: blur(2px); }
+            100% { transform: translateY(0) scale(1); filter: blur(0px); }
+        }
+
         .spinning { 
-            filter: blur(5px) brightness(0.8); 
-            transform: translateY(-2px); 
-            transition: 0.1s; 
+            /* Animação rápida de "tremedeira" vertical */
+            animation: spinBlur 0.1s infinite linear;
+            /* O texto vai mudar via JS para dar a ilusão de rotação */
+            opacity: 0.8;
         }
 
         /* --- BOTÃO --- */
@@ -310,17 +320,19 @@
     </div>
 
     <script>
-        // --- MOTOR DE ÁUDIO (IDÊNTICO AO ORIGINAL) ---
+        // --- MOTOR DE ÁUDIO (ATUALIZADO PARA MELODIA VICIANTE) ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         let isMusicPlaying = false;
         let step = 0;
         let timerID;
 
+        // Nova Sequência: Estilo "Casino Hurry" (High Energy, Escala Maior)
+        // Essa sequência cria uma sensação de expectativa positiva e looping infinito.
         const melodySequence = [
-            523.25, 659.25, 783.99, 1046.50,
-            783.99, 659.25, 523.25, 392.00,
-            523.25, 659.25, 783.99, 987.77,
-            1046.50, 783.99, 659.25, 523.25
+            783.99, 783.99, 1046.50, 1318.51, // G5, G5, C6, E6
+            1046.50, 783.99, 659.25, 523.25,  // C6, G5, E5, C5
+            587.33, 587.33, 783.99, 987.77,   // D5, D5, G5, B5
+            783.99, 587.33, 523.25, 659.25    // G5, D5, C5, E5
         ];
 
         function playNote(freq, type, vol, dur) {
@@ -341,24 +353,34 @@
         function startAddictiveLoop() {
             if(!isMusicPlaying) return;
 
-            const noteDuration = 0.107; 
+            // Tempo mantido, mas a nota será mais curta (staccato) para dar ritmo
             const time = audioCtx.currentTime;
-
             const note = melodySequence[step % 16];
-            const currentVol = (step % 4 === 0) ? 0.08 : 0.04; 
-            playNote(note, 'square', currentVol, 0.1);
+            
+            // Melodia Principal: Usamos 'triangle' para um som mais feliz/flauta, menos 8-bit duro
+            const currentVol = (step % 4 === 0) ? 0.08 : 0.05; 
+            playNote(note, 'triangle', currentVol, 0.1); 
 
-            if (step % 4 === 2 || step % 4 === 0) {
+            // Baixo (Bassline): Marca o ritmo forte
+            if (step % 4 === 0) {
                 const oscBass = audioCtx.createOscillator();
                 const gainBass = audioCtx.createGain();
                 oscBass.connect(gainBass); gainBass.connect(audioCtx.destination);
-                oscBass.frequency.setValueAtTime(150, time);
-                oscBass.frequency.exponentialRampToValueAtTime(40, time + 0.15);
-                gainBass.gain.setValueAtTime(0.3, time);
-                gainBass.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
-                oscBass.start(time); oscBass.stop(time + 0.15);
+                
+                // Nota grave pulsante (C3 e G2)
+                const bassFreq = (step % 8 === 0) ? 130.81 : 98.00;
+                
+                oscBass.type = 'square'; // Mantém o peso no baixo
+                oscBass.frequency.setValueAtTime(bassFreq, time);
+                oscBass.frequency.exponentialRampToValueAtTime(bassFreq - 20, time + 0.2); // Pitch drop
+                
+                gainBass.gain.setValueAtTime(0.2, time);
+                gainBass.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
+                
+                oscBass.start(time); oscBass.stop(time + 0.2);
             }
 
+            // Chimbal/Hi-hat (Ruído branco para ritmo) - Mantido, mas mais frequente
             if (step % 2 === 0) {
                  const bufferSize = audioCtx.sampleRate * 0.05;
                  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -368,12 +390,15 @@
                  noise.buffer = buffer;
                  const gainNoise = audioCtx.createGain();
                  noise.connect(gainNoise); gainNoise.connect(audioCtx.destination);
-                 gainNoise.gain.value = 0.05;
+                 
+                 // Volume alternado para dar "swing"
+                 gainNoise.gain.value = (step % 4 === 2) ? 0.04 : 0.02;
                  noise.start(time);
             }
 
             step++;
-            timerID = setTimeout(startAddictiveLoop, 107);
+            // 110ms = Aprox 136 BPM (House/Techno speed)
+            timerID = setTimeout(startAddictiveLoop, 110);
         }
 
         function toggleMusic() {
@@ -391,6 +416,33 @@
                 btn.classList.remove('on');
                 clearTimeout(timerID);
             }
+        }
+
+        // --- EFEITO SONORO DO GIRO (NOVO) ---
+        let spinSoundTimer;
+        function startSpinLoopSound() {
+            // Cria um som repetitivo de "tec tec tec"
+            if(spinSoundTimer) clearInterval(spinSoundTimer);
+            spinSoundTimer = setInterval(() => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                
+                // Som curto de percussão sintética
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
+                
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 0.05);
+            }, 90); // Toca a cada 90ms
+        }
+
+        function stopSpinLoopSound() {
+            clearInterval(spinSoundTimer);
         }
 
         // --- LÓGICA DO JOGO ---
@@ -412,6 +464,9 @@
         const titleEl = document.getElementById('winTitle');
         const amountEl = document.getElementById('winAmount');
 
+        // Variável para controlar a troca visual dos emojis
+        let visualSpinInterval;
+
         function updateProb(val) {
             winChance = parseInt(val);
             document.getElementById('probDisplay').innerText = val;
@@ -432,11 +487,28 @@
             updateBalanceUI();
             
             document.getElementById('spinBtn').disabled = true;
+
+            // Inicia o som de loop
+            startSpinLoopSound();
+
             reels.forEach(r => {
                 r.classList.add('spinning');
                 r.innerText = '❓'; 
             });
 
+            // Efeito visual de trocar os emojis rápido enquanto gira
+            if(visualSpinInterval) clearInterval(visualSpinInterval);
+            visualSpinInterval = setInterval(() => {
+                reels.forEach(r => {
+                    if(r.classList.contains('spinning')) {
+                        // Escolhe um emoji aleatório para dar ilusão de movimento
+                        const randomSym = symbols[Math.floor(Math.random() * symbols.length)];
+                        r.innerText = randomSym;
+                    }
+                });
+            }, 100);
+
+            // Som inicial de alavanca (mantido)
             playSound(100, 800, 0.5, 'sawtooth');
 
             let result = [];
@@ -456,18 +528,23 @@
                 }
             }
 
-            let delay = 400; 
+            let delay = 600; // Um pouco mais lento para apreciar a animação
             reels.forEach((reel, i) => {
                 setTimeout(() => {
                     reel.classList.remove('spinning');
                     reel.innerText = result[i];
-                    playNote(200, 'triangle', 0.2, 0.1);
+                    
+                    // Som de parada do rolo (TUM!)
+                    playNote(100, 'square', 0.2, 0.1);
                     
                     if(i === 2) {
+                        // Parou o último rolo
+                        clearInterval(visualSpinInterval); // Para a troca visual
+                        stopSpinLoopSound(); // Para o som de giro
                         setTimeout(() => checkResult(result, bet), 300);
                     }
                 }, delay);
-                delay += 400;
+                delay += 600; // Tempo aumentado entre paradas
             });
         }
 
