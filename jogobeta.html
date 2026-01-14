@@ -8,7 +8,7 @@
     <style>
         /* --- RESET & GLOBAIS --- */
         * {
-            box-sizing: border-box; /* Essencial para responsividade */
+            box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -25,10 +25,10 @@
             color: white;
             user-select: none;
             overflow-x: hidden;
-            padding: 20px 10px; /* Espaço lateral para mobile */
+            padding: 20px 10px;
         }
 
-        /* O Ritmo Visual - Borda pulsante */
+        /* --- ANIMAÇÕES GLOBAIS --- */
         @keyframes pulseBeat {
             0% { box-shadow: 0 0 10px #ff0055; border-color: #ff0055; }
             50% { box-shadow: 0 0 30px #ff00de; border-color: #ff00de; }
@@ -39,17 +39,38 @@
             animation: pulseBeat 0.42s infinite;
         }
 
-        /* --- CONTAINER DA MÁQUINA (Adaptado) --- */
+        /* --- BOTÃO DE CADASTRO --- */
+        .register-call-btn {
+            background: linear-gradient(45deg, #00ffaa, #00aaff);
+            color: #000;
+            font-family: 'Russo One', sans-serif;
+            font-size: 18px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.6);
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+            z-index: 20;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* --- CONTAINER DA MÁQUINA --- */
         .machine-container {
             background: linear-gradient(180deg, #2b003b, #12001f);
             padding: 20px;
             border-radius: 20px;
             border: 3px solid #ff0055;
             text-align: center;
-            
-            /* Responsividade Crítica */
             width: 100%;
-            max-width: 450px; /* Limite para Desktop */
+            max-width: 450px;
             position: relative;
             z-index: 10;
             margin-bottom: 20px;
@@ -62,7 +83,6 @@
             background: linear-gradient(to right, #ff0055, #ffcc00); 
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            /* Fonte responsiva */
             font-size: clamp(24px, 6vw, 32px);
             letter-spacing: 1px;
             text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
@@ -101,11 +121,11 @@
             width: 80px; padding: 8px; text-align: center; border-radius: 5px; font-weight: bold;
         }
 
-        /* --- ROLOS (Reels) - Totalmente Fluido --- */
+        /* --- ROLOS (Reels) --- */
         .reels-container {
             display: flex; 
             justify-content: space-between; 
-            gap: 2%; /* Gap relativo */
+            gap: 2%;
             background-color: #000; 
             padding: 10px; 
             border-radius: 15px;
@@ -116,29 +136,22 @@
 
         .reel {
             background: #fff; 
-            /* Largura responsiva para caber 3 lado a lado */
             width: 32%; 
-            /* Altura baseada na largura da tela para manter proporção quadrada no mobile */
             height: 24vw; 
-            max-height: 110px; /* Trava altura no desktop */
+            max-height: 110px;
             min-height: 80px;
-            
             border-radius: 10px;
             display: flex; 
             justify-content: center; 
             align-items: center;
-            
-            /* Tamanho do emoji ajustável */
             font-size: clamp(35px, 10vw, 60px); 
-            
             color: #333; 
             overflow: hidden;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
             border: 2px solid #d4af37;
-            transition: transform 0.1s; /* Suaviza a parada */
+            transition: transform 0.1s;
         }
         
-        /* --- ANIMAÇÃO DE GIRO MODIFICADA --- */
         @keyframes spinBlur {
             0% { transform: translateY(0) scale(1); filter: blur(0px); }
             25% { transform: translateY(-10px) scale(0.9); filter: blur(2px); }
@@ -147,13 +160,11 @@
         }
 
         .spinning { 
-            /* Animação rápida de "tremedeira" vertical */
             animation: spinBlur 0.1s infinite linear;
-            /* O texto vai mudar via JS para dar a ilusão de rotação */
             opacity: 0.8;
         }
 
-        /* --- BOTÃO --- */
+        /* --- BOTÃO DE GIRO --- */
         #spinBtn {
             background: linear-gradient(90deg, #ff930f, #fff95b);
             color: #4a0e0e; border: none; 
@@ -165,11 +176,53 @@
             cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
             box-shadow: 0 5px 0 #b86e00, 0 10px 20px rgba(255, 147, 15, 0.4);
             transition: transform 0.1s, box-shadow 0.1s;
-            /* Evitar zoom duplo no iOS ao tocar rápido */
             touch-action: manipulation;
         }
         #spinBtn:active { transform: translateY(4px); box-shadow: 0 0 0 #b86e00; }
         #spinBtn:disabled { background: #555; color: #888; box-shadow: none; cursor: not-allowed; transform: translateY(4px); }
+
+        /* --- MODAL DE CADASTRO --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 20000;
+            display: none; justify-content: center; align-items: center;
+            padding: 20px; backdrop-filter: blur(5px);
+        }
+        
+        .modal-box {
+            background: #1a0b2e;
+            border: 2px solid #00ffaa;
+            border-radius: 15px;
+            width: 100%; max-width: 400px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 170, 0.3);
+            position: relative;
+        }
+
+        .modal-title {
+            font-family: 'Russo One', sans-serif;
+            color: #00ffaa; font-size: 24px; margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; color: #aaa; font-size: 12px; margin-bottom: 5px; font-weight: bold; }
+        .form-group input {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444;
+            background: #0f0518; color: white; font-size: 16px; outline: none;
+        }
+        .form-group input:focus { border-color: #00ffaa; }
+
+        .btn-submit {
+            width: 100%; padding: 15px; border-radius: 8px; border: none;
+            background: #00ffaa; color: #000; font-weight: bold; font-size: 16px;
+            font-family: 'Russo One', sans-serif; cursor: pointer; margin-top: 10px;
+        }
+        .btn-close-modal {
+            position: absolute; top: 10px; right: 15px; background: none; border: none;
+            color: #fff; font-size: 24px; cursor: pointer;
+        }
 
         /* --- PAINEL DE CONTROLE / CHEAT --- */
         .admin-panel {
@@ -177,10 +230,8 @@
             padding: 15px;
             border-radius: 15px;
             border: 2px dashed #444;
-            
             width: 100%;
             max-width: 450px;
-            
             text-align: center;
         }
         .slider-container {
@@ -189,7 +240,7 @@
         }
         input[type=range] { flex-grow: 1; accent-color: #ff00de; cursor: pointer; height: 20px; }
 
-        /* --- OVERLAY DE VITÓRIA (Responsivo) --- */
+        /* --- OVERLAY DE VITÓRIA --- */
         #winOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.92); z-index: 9999;
@@ -200,7 +251,7 @@
         }
 
         .sunburst {
-            position: absolute; width: 200vmax; height: 200vmax; /* Garante cobertura em qualquer orientação */
+            position: absolute; width: 200vmax; height: 200vmax; 
             background: repeating-conic-gradient(from 0deg, rgba(255, 215, 0, 0.1) 0deg 15deg, transparent 15deg 30deg);
             animation: rotateSun 20s linear infinite;
             z-index: -1;
@@ -208,10 +259,7 @@
 
         .win-title {
             font-family: 'Russo One', sans-serif;
-            
-            /* Clamping para texto gigante caber no celular */
             font-size: clamp(40px, 12vw, 80px);
-            
             text-transform: uppercase;
             text-align: center;
             line-height: 1.1;
@@ -245,7 +293,6 @@
             font-weight: bold; letter-spacing: 2px; text-align: center;
         }
 
-        /* --- MÚSICA BTN --- */
         #musicToggle {
             background: #ff0055; color: white; border: none; padding: 8px 15px;
             border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 11px;
@@ -253,15 +300,13 @@
         }
         #musicToggle:hover { transform: scale(1.05); }
 
-        /* Moedas caindo */
         .coin {
             position: fixed; width: 40px; height: 40px; background: gold;
             border-radius: 50%; border: 3px solid #daa520;
             display: flex; justify-content: center; align-items: center;
             font-weight: bold; color: #b86e00; font-family: 'Russo One'; font-size: 20px;
             z-index: 10000; animation: fallDown 2.5s linear forwards;
-            box-shadow: 0 0 10px gold;
-            pointer-events: none;
+            box-shadow: 0 0 10px gold; pointer-events: none;
         }
 
         @keyframes rotateSun { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -272,6 +317,30 @@
     </style>
 </head>
 <body>
+
+    <button class="register-call-btn" onclick="openRegisterModal()">📝 CADASTRAR AGORA</button>
+
+    <div id="registerModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="btn-close-modal" onclick="closeRegisterModal()">×</button>
+            <div class="modal-title">CRIE SUA CONTA</div>
+            <form onsubmit="submitRegistration(event)">
+                <div class="form-group">
+                    <label>NOME COMPLETO</label>
+                    <input type="text" placeholder="Seu nome aqui" required>
+                </div>
+                <div class="form-group">
+                    <label>E-MAIL</label>
+                    <input type="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>CELULAR (WhatsApp)</label>
+                    <input type="tel" placeholder="(00) 00000-0000" required>
+                </div>
+                <button type="submit" class="btn-submit">FINALIZAR CADASTRO</button>
+            </form>
+        </div>
+    </div>
 
     <div id="winOverlay" onclick="closeOverlay()">
         <div class="sunburst"></div>
@@ -290,7 +359,7 @@
             </div>
             <div class="hud-row">
                 <span>SEU SALDO</span>
-                <span id="balanceDisplay" class="balance-text">R$ 100,00</span>
+                <span id="balanceDisplay" class="balance-text">R$ 0,00</span>
             </div>
             <div class="hud-row" style="margin-top: 15px;">
                 <label>APOSTA:</label>
@@ -320,67 +389,74 @@
     </div>
 
     <script>
-        // --- MOTOR DE ÁUDIO (ATUALIZADO PARA MELODIA VICIANTE) ---
+        // --- FUNÇÕES DO CADASTRO ---
+        function openRegisterModal() {
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        function submitRegistration(event) {
+            event.preventDefault(); // Não recarrega a página
+            
+            // Simulação de cadastro
+            alert("CADASTRO REALIZADO COM SUCESSO!\nAgora você pode jogar e sacar seus ganhos.");
+            closeRegisterModal();
+            
+            // ATENÇÃO: Adiciona R$ 50,00 ao saldo aqui
+            balance += 50; 
+            updateBalanceUI();
+            alert("BÔNUS DE BOAS-VINDAS: Você ganhou R$ 50,00!");
+        }
+
+        // --- MOTOR DE ÁUDIO ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         let isMusicPlaying = false;
         let step = 0;
         let timerID;
 
-        // Nova Sequência: Estilo "Casino Hurry" (High Energy, Escala Maior)
-        // Essa sequência cria uma sensação de expectativa positiva e looping infinito.
         const melodySequence = [
-            783.99, 783.99, 1046.50, 1318.51, // G5, G5, C6, E6
-            1046.50, 783.99, 659.25, 523.25,  // C6, G5, E5, C5
-            587.33, 587.33, 783.99, 987.77,   // D5, D5, G5, B5
-            783.99, 587.33, 523.25, 659.25    // G5, D5, C5, E5
+            783.99, 783.99, 1046.50, 1318.51, 
+            1046.50, 783.99, 659.25, 523.25, 
+            587.33, 587.33, 783.99, 987.77, 
+            783.99, 587.33, 523.25, 659.25
         ];
 
         function playNote(freq, type, vol, dur) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
-            
             osc.type = type;
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            
             gain.gain.setValueAtTime(vol, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-            
             osc.start(audioCtx.currentTime);
             osc.stop(audioCtx.currentTime + dur);
         }
 
         function startAddictiveLoop() {
             if(!isMusicPlaying) return;
-
-            // Tempo mantido, mas a nota será mais curta (staccato) para dar ritmo
             const time = audioCtx.currentTime;
             const note = melodySequence[step % 16];
             
-            // Melodia Principal: Usamos 'triangle' para um som mais feliz/flauta, menos 8-bit duro
             const currentVol = (step % 4 === 0) ? 0.08 : 0.05; 
             playNote(note, 'triangle', currentVol, 0.1); 
 
-            // Baixo (Bassline): Marca o ritmo forte
             if (step % 4 === 0) {
                 const oscBass = audioCtx.createOscillator();
                 const gainBass = audioCtx.createGain();
                 oscBass.connect(gainBass); gainBass.connect(audioCtx.destination);
-                
-                // Nota grave pulsante (C3 e G2)
                 const bassFreq = (step % 8 === 0) ? 130.81 : 98.00;
-                
-                oscBass.type = 'square'; // Mantém o peso no baixo
+                oscBass.type = 'square'; 
                 oscBass.frequency.setValueAtTime(bassFreq, time);
-                oscBass.frequency.exponentialRampToValueAtTime(bassFreq - 20, time + 0.2); // Pitch drop
-                
+                oscBass.frequency.exponentialRampToValueAtTime(bassFreq - 20, time + 0.2);
                 gainBass.gain.setValueAtTime(0.2, time);
                 gainBass.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
-                
                 oscBass.start(time); oscBass.stop(time + 0.2);
             }
 
-            // Chimbal/Hi-hat (Ruído branco para ritmo) - Mantido, mas mais frequente
             if (step % 2 === 0) {
                  const bufferSize = audioCtx.sampleRate * 0.05;
                  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -390,14 +466,11 @@
                  noise.buffer = buffer;
                  const gainNoise = audioCtx.createGain();
                  noise.connect(gainNoise); gainNoise.connect(audioCtx.destination);
-                 
-                 // Volume alternado para dar "swing"
                  gainNoise.gain.value = (step % 4 === 2) ? 0.04 : 0.02;
                  noise.start(time);
             }
 
             step++;
-            // 110ms = Aprox 136 BPM (House/Techno speed)
             timerID = setTimeout(startAddictiveLoop, 110);
         }
 
@@ -418,34 +491,27 @@
             }
         }
 
-        // --- EFEITO SONORO DO GIRO (NOVO) ---
         let spinSoundTimer;
         function startSpinLoopSound() {
-            // Cria um som repetitivo de "tec tec tec"
             if(spinSoundTimer) clearInterval(spinSoundTimer);
             spinSoundTimer = setInterval(() => {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain); gain.connect(audioCtx.destination);
-                
-                // Som curto de percussão sintética
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(600, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
-                
                 gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-                
                 osc.start(audioCtx.currentTime);
                 osc.stop(audioCtx.currentTime + 0.05);
-            }, 90); // Toca a cada 90ms
+            }, 90);
         }
 
         function stopSpinLoopSound() {
             clearInterval(spinSoundTimer);
         }
 
-        // --- LÓGICA DO JOGO ---
         const symbols = ['🍊', '🧧', '🧨', '💰', '💎', '🐯'];
         
         const payTable = {
@@ -457,14 +523,14 @@
             '🐯': { mult: 50,  tier: 'SUPER MEGA<br>GANHO', class: 'tier-super-mega' }
         };
 
-        let balance = 100;
+        // --- ATENÇÃO: Saldo inicial zerado ---
+        let balance = 0;
         let winChance = 40;
         const reels = [document.getElementById('reel1'), document.getElementById('reel2'), document.getElementById('reel3')];
         const overlay = document.getElementById('winOverlay');
         const titleEl = document.getElementById('winTitle');
         const amountEl = document.getElementById('winAmount');
 
-        // Variável para controlar a troca visual dos emojis
         let visualSpinInterval;
 
         function updateProb(val) {
@@ -477,18 +543,15 @@
             const betInput = document.getElementById('betInput');
             const bet = parseInt(betInput.value);
             
-            if(bet > balance) { alert("Saldo Insuficiente!"); return; }
+            if(bet > balance) { alert("Saldo Insuficiente! Cadastre-se para ganhar bônus."); return; }
             if(isNaN(bet) || bet <= 0) { alert("Aposta inválida"); return; }
             
-            // Esconde teclado no mobile ao girar
             betInput.blur();
 
             balance -= bet;
             updateBalanceUI();
             
             document.getElementById('spinBtn').disabled = true;
-
-            // Inicia o som de loop
             startSpinLoopSound();
 
             reels.forEach(r => {
@@ -496,19 +559,16 @@
                 r.innerText = '❓'; 
             });
 
-            // Efeito visual de trocar os emojis rápido enquanto gira
             if(visualSpinInterval) clearInterval(visualSpinInterval);
             visualSpinInterval = setInterval(() => {
                 reels.forEach(r => {
                     if(r.classList.contains('spinning')) {
-                        // Escolhe um emoji aleatório para dar ilusão de movimento
                         const randomSym = symbols[Math.floor(Math.random() * symbols.length)];
                         r.innerText = randomSym;
                     }
                 });
             }, 100);
 
-            // Som inicial de alavanca (mantido)
             playSound(100, 800, 0.5, 'sawtooth');
 
             let result = [];
@@ -528,23 +588,20 @@
                 }
             }
 
-            let delay = 600; // Um pouco mais lento para apreciar a animação
+            let delay = 600;
             reels.forEach((reel, i) => {
                 setTimeout(() => {
                     reel.classList.remove('spinning');
                     reel.innerText = result[i];
-                    
-                    // Som de parada do rolo (TUM!)
                     playNote(100, 'square', 0.2, 0.1);
                     
                     if(i === 2) {
-                        // Parou o último rolo
-                        clearInterval(visualSpinInterval); // Para a troca visual
-                        stopSpinLoopSound(); // Para o som de giro
+                        clearInterval(visualSpinInterval);
+                        stopSpinLoopSound();
                         setTimeout(() => checkResult(result, bet), 300);
                     }
                 }, delay);
-                delay += 600; // Tempo aumentado entre paradas
+                delay += 600;
             });
         }
 
@@ -623,7 +680,6 @@
                 const coin = document.createElement('div');
                 coin.classList.add('coin');
                 coin.innerText = "R$";
-                // Ajustado para vw para evitar scroll horizontal
                 coin.style.left = Math.random() * 90 + "vw"; 
                 coin.style.top = -50 + "px";
                 coin.style.animationDuration = (Math.random() * 2 + 1.5) + "s";
